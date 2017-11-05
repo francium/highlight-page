@@ -32,7 +32,7 @@ const
  * @returns {boolean}
  */
 function haveSameColor(a, b) {
-    return dom(a).color() === dom(b).color();
+    return dom(a).color() === dom(b).color()
 }
 
 /**
