@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = TextHighlighter;
+exports.default = HighlightText;
 var
 /**
  * Attribute added by default to every highlight.
@@ -421,7 +421,7 @@ function unbindEvents(el, scope) {
  * wrappers is passed as param.
  * @class TextHighlighter
  */
-function TextHighlighter(element, options) {
+function HighlightText(element, options) {
     if (!element) {
         throw 'Missing anchor element';
     }
