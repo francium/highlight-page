@@ -402,7 +402,7 @@ function unbindEvents(el, scope) {
 }
 
 /**
- * Creates TextHighlighter instance and binds to given DOM elements.
+ * Creates Highlighter instance and binds to given DOM elements.
  * @param {HTMLElement} element - DOM element to which highlighted will be applied.
  * @param {object} [options] - additional options.
  * @param {string} options.color - highlight color.
@@ -415,7 +415,7 @@ function unbindEvents(el, scope) {
  *  passed as param. Function should return true to continue processing, or false - to prevent highlighting.
  * @param {function} options.onAfterHighlight - function called after highlight is created. Array of created
  * wrappers is passed as param.
- * @class TextHighlighter
+ * @class Highlighter
  */
 export default function Highlighter(element, options) {
     if (!element) {
@@ -439,23 +439,23 @@ export default function Highlighter(element, options) {
 /**
  * Permanently disables highlighting.
  * Unbinds events and remove context element class.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.destroy = function () {
+Highlighter.prototype.destroy = function () {
     unbindEvents(this.el, this);
     dom(this.el).removeClass(this.options.contextClass);
 };
 
-TextHighlighter.prototype.highlightHandler = function () {
+Highlighter.prototype.highlightHandler = function () {
     this.doHighlight();
 };
 
 /**
  * Highlights current range.
  * @param {boolean} keepRange - Don't remove range after highlighting. Default: false.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.doHighlight = function (keepRange) {
+Highlighter.prototype.doHighlight = function (keepRange) {
     let range = dom(this.el).getRange(),
         wrapper,
         createdHighlights,
@@ -468,7 +468,7 @@ TextHighlighter.prototype.doHighlight = function (keepRange) {
 
     if (this.options.onBeforeHighlight(range) === true) {
         timestamp = +new Date();
-        wrapper = TextHighlighter.createWrapper(this.options);
+        wrapper = Highlighter.createWrapper(this.options);
         wrapper.setAttribute(TIMESTAMP_ATTR, timestamp);
 
         createdHighlights = this.highlightRange(range, wrapper);
@@ -488,9 +488,9 @@ TextHighlighter.prototype.doHighlight = function (keepRange) {
  * @param {Range} range
  * @param {HTMLElement} wrapper
  * @returns {Array} - array of created highlights.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.highlightRange = function (range, wrapper) {
+Highlighter.prototype.highlightRange = function (range, wrapper) {
     if (!range || range.collapsed) {
         return [];
     }
@@ -555,9 +555,9 @@ TextHighlighter.prototype.highlightRange = function (range, wrapper) {
  * @param {Array} highlights - highlights to normalize.
  * @returns {Array} - array of normalized highlights. Order and number of returned highlights may be different than
  * input highlights.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.normalizeHighlights = function (highlights) {
+Highlighter.prototype.normalizeHighlights = function (highlights) {
     let normalizedHighlights;
 
     this.flattenNestedHighlights(highlights);
@@ -580,9 +580,9 @@ TextHighlighter.prototype.normalizeHighlights = function (highlights) {
  * Flattens highlights structure.
  * Note: this method changes input highlights - their order and number after calling this method may change.
  * @param {Array} highlights - highlights to flatten.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.flattenNestedHighlights = function (highlights) {
+Highlighter.prototype.flattenNestedHighlights = function (highlights) {
     let again,
         self = this;
 
@@ -636,9 +636,9 @@ TextHighlighter.prototype.flattenNestedHighlights = function (highlights) {
  * Merges sibling highlights and normalizes descendant text nodes.
  * Note: this method changes input highlights - their order and number after calling this method may change.
  * @param highlights
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.mergeSiblingHighlights = function (highlights) {
+Highlighter.prototype.mergeSiblingHighlights = function (highlights) {
     let self = this;
 
     function shouldMerge(current, node) {
@@ -667,18 +667,18 @@ TextHighlighter.prototype.mergeSiblingHighlights = function (highlights) {
 /**
  * Sets highlighting color.
  * @param {string} color - valid CSS color.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.setColor = function (color) {
+Highlighter.prototype.setColor = function (color) {
     this.options.color = color;
 };
 
 /**
  * Returns highlighting color.
  * @returns {string}
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.getColor = function () {
+Highlighter.prototype.getColor = function () {
     return this.options.color;
 };
 
@@ -686,9 +686,9 @@ TextHighlighter.prototype.getColor = function () {
  * Removes highlights from element. If element is a highlight itself, it is removed as well.
  * If no element is given, all highlights all removed.
  * @param {HTMLElement} [element] - element to remove highlights from
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.removeHighlights = function (element) {
+Highlighter.prototype.removeHighlights = function (element) {
     let container = element || this.el,
         highlights = this.getHighlights({ container: container }),
         self = this;
@@ -735,9 +735,9 @@ TextHighlighter.prototype.removeHighlights = function (element) {
  * in the same moment. Each group is an object which has got array of highlights, 'toString' method and 'timestamp'
  * property. Default: false.
  * @returns {Array} - array of highlights.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.getHighlights = function (params) {
+Highlighter.prototype.getHighlights = function (params) {
     params = defaults(params, {
         container: this.el,
         andSelf: true,
@@ -763,18 +763,18 @@ TextHighlighter.prototype.getHighlights = function (params) {
  * All highlights have 'data-highlighted' attribute.
  * @param el - element to check.
  * @returns {boolean}
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.isHighlight = function (el) {
+Highlighter.prototype.isHighlight = function (el) {
     return el && el.nodeType === NODE_TYPE.ELEMENT_NODE && el.hasAttribute(DATA_ATTR);
 };
 
 /**
  * Serializes all highlights in the element the highlighter is applied to.
  * @returns {string} - stringified JSON with highlights definition
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.serializeHighlights = function () {
+Highlighter.prototype.serializeHighlights = function () {
     let highlights = this.getHighlights(),
         refEl = this.el,
         hlDescriptors = [];
@@ -824,9 +824,9 @@ TextHighlighter.prototype.serializeHighlights = function () {
  * @throws exception when can't parse JSON or JSON has invalid structure.
  * @param {object} json - JSON object with highlights definition.
  * @returns {Array} - array of deserialized highlights.
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.deserializeHighlights = function (json) {
+Highlighter.prototype.deserializeHighlights = function (json) {
     let hlDescriptors,
         highlights = [],
         self = this;
@@ -896,9 +896,9 @@ TextHighlighter.prototype.deserializeHighlights = function (json) {
  * Finds and highlights given text.
  * @param {string} text - text to search for
  * @param {boolean} [caseSensitive] - if set to true, performs case sensitive search (default: true)
- * @memberof TextHighlighter
+ * @memberof Highlighter
  */
-TextHighlighter.prototype.find = function (text, caseSensitive) {
+Highlighter.prototype.find = function (text, caseSensitive) {
     let wnd = dom(this.el).getWindow(),
         scrollX = wnd.scrollX,
         scrollY = wnd.scrollY,
@@ -930,14 +930,14 @@ TextHighlighter.prototype.find = function (text, caseSensitive) {
 
 /**
  * Creates wrapper for highlights.
- * TextHighlighter instance calls this method each time it needs to create highlights and pass options retrieved
+ * Highlighter instance calls this method each time it needs to create highlights and pass options retrieved
  * in constructor.
- * @param {object} options - the same object as in TextHighlighter constructor.
+ * @param {object} options - the same object as in Highlighter constructor.
  * @returns {HTMLElement}
- * @memberof TextHighlighter
+ * @memberof Highlighter
  * @static
  */
-TextHighlighter.createWrapper = function (options) {
+Highlighter.createWrapper = function (options) {
     let span = document.createElement('span');
     span.style.backgroundColor = options.color;
     span.className = options.highlightedClass;

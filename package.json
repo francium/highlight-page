@@ -1,6 +1,6 @@
 {
   "name": "highlight-page",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "main": "dist/highlight-page.js",
   "files": ["dist/highlight-page.js"],
   "description": "DOM highlighter",
