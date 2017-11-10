@@ -391,15 +391,15 @@ let dom = function (el) {
     };
 };
 
-function bindEvents(el, scope) {
-    el.addEventListener('mouseup', scope.highlightHandler.bind(scope));
-    el.addEventListener('touchend', scope.highlightHandler.bind(scope));
-}
-
-function unbindEvents(el, scope) {
-    el.removeEventListener('mouseup', scope.highlightHandler.bind(scope));
-    el.removeEventListener('touchend', scope.highlightHandler.bind(scope));
-}
+// function bindEvents(el, scope) {
+//     el.addEventListener('mouseup', scope.highlightHandler.bind(scope));
+//     el.addEventListener('touchend', scope.highlightHandler.bind(scope));
+// }
+//
+// function unbindEvents(el, scope) {
+//     el.removeEventListener('mouseup', scope.highlightHandler.bind(scope));
+//     el.removeEventListener('touchend', scope.highlightHandler.bind(scope));
+// }
 
 /**
  * Creates Highlighter instance and binds to given DOM elements.
@@ -433,7 +433,7 @@ export default function Highlighter(element, options) {
     });
 
     dom(this.el).addClass(this.options.contextClass);
-    bindEvents(this.el, this);
+    // bindEvents(this.el, this);
 }
 
 /**
@@ -442,7 +442,7 @@ export default function Highlighter(element, options) {
  * @memberof Highlighter
  */
 Highlighter.prototype.destroy = function () {
-    unbindEvents(this.el, this);
+    // unbindEvents(this.el, this);
     dom(this.el).removeClass(this.options.contextClass);
 };
 
