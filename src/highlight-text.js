@@ -417,7 +417,7 @@ function unbindEvents(el, scope) {
  * wrappers is passed as param.
  * @class TextHighlighter
  */
-export default function TextHighlighter(element, options) {
+export default function HighlightText(element, options) {
     if (!element) {
         throw 'Missing anchor element';
     }
