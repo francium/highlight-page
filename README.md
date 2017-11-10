@@ -1,6 +1,6 @@
-# highlight-text
+# highlight-page
 
-highlight-text allows you to highlight text on web pages. Just select it!
+highlight-page allows you to highlight text on web pages. Just select it!
 
 Fork of [https://github.com/mir3z/texthighlighter](https://github.com/mir3z/texthighlighter)
 
@@ -9,7 +9,9 @@ Fork of [https://github.com/mir3z/texthighlighter](https://github.com/mir3z/text
 Usage:
 
 ```
-let highlighter = new HighlightText(document.body);
+import Highlighter from 'highlight-page';
+
+let highlighter = new Highlighter(document.body);
 ```
 
 For more details see [API reference](http://mir3z.github.io/texthighlighter/doc/index.html) or
